@@ -3,6 +3,7 @@ import network
 import ubinascii
 import machine
 import time
+import utime
 from secrets import secrets
 import socket
 from umqtt.simple import MQTTClient
@@ -11,6 +12,17 @@ from machine import Pin
 last_message = 0
 message_interval = 5
 counter = 0
+
+
+button1 = Pin(16, Pin.IN)   #connect Button 1 on GP16
+
+led1 = Pin(18, Pin.OUT)     #connect Led 1 on GP18
+led2 = Pin(19, Pin.OUT)     #connect Led 2 on GP19
+led3 = Pin(20, Pin.OUT)     #connect Led 3 on GP20
+led4 = Pin(21, Pin.OUT)     #connect Led 4 on GP21
+
+buz = Pin(17, Pin.OUT)      #connect Buzzer 4 on GP17
+
 
 #
 # Set country to avoid possible errors / https://randomnerdtutorials.com/micropython-mqtt-esp32-esp8266/
@@ -81,6 +93,9 @@ def sub_cb(topic, msg):
   if msg == b'LEDoff':
     print('Device received LEDoff message on subscribed topic')
     led.value(0)
+  if msg == b'ToggleLed1':
+    print('Device received ToggleLed1 message on subscribed topic %s',topic)
+    led1.toggle()
 
 
 def connect_and_subscribe():
@@ -105,6 +120,13 @@ except OSError as e:
 while True:
   try:
     client.check_msg()
+    
+    if button1.value() :
+      print('Button 1 pressed!')
+      utime.sleep(1)
+      client.publish(pub_topic, 'Button1')
+     
+      
     if (time.time() - last_message) > message_interval:
       pub_msg = b'Hello #%d' % counter
       client.publish(pub_topic, pub_msg)
