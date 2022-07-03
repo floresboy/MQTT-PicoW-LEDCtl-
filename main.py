@@ -12,6 +12,7 @@ last_message = 0
 message_interval = 5
 counter = 0
 
+#
 # Set country to avoid possible errors / https://randomnerdtutorials.com/micropython-mqtt-esp32-esp8266/
 rp2.country('NL')
 
