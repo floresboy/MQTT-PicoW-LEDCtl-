@@ -37,9 +37,9 @@ mac = ubinascii.hexlify(network.WLAN().config('mac'),':').decode()
 print('mac = ' + mac)
 
 # Other things to query
-# print(wlan.config('channel'))
-# print(wlan.config('essid'))
-# print(wlan.config('txpower'))
+print(wlan.config('channel'))
+print(wlan.config('essid'))
+print(wlan.config('txpower'))
 
 # Load login data from different file for safety reasons
 ssid = secrets['ssid']
@@ -127,10 +127,10 @@ while True:
       client.publish(pub_topic, 'Button1')
      
       
-    if (time.time() - last_message) > message_interval:
-      pub_msg = b'Hello #%d' % counter
-      client.publish(pub_topic, pub_msg)
-      last_message = time.time()
-      counter += 1
+#    if (time.time() - last_message) > message_interval:
+#      pub_msg = b'Hello #%d' % counter
+#      client.publish(pub_topic, pub_msg)
+#      last_message = time.time()
+#      counter += 1
   except OSError as e:
     restart_and_reconnect()
